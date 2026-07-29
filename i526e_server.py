@@ -1066,7 +1066,13 @@ country_of_current_residence, country_of_last_lpr_abroad"""
                 x0 = rect[0] / pdf_w * img_w; y0 = (pdf_h - rect[3]) / pdf_h * img_h
                 x1 = rect[2] / pdf_w * img_w; y1 = (pdf_h - rect[1]) / pdf_h * img_h
                 w, h = x1 - x0, y1 - y0
-                draw.rectangle([x0+w*0.2, y0+h*0.2, x1-w*0.2, y1-h*0.2], fill="#1A1A1A")
+                pad_x = w * 0.2
+                pad_y = h * 0.2
+                inner_x0, inner_y0 = x0 + pad_x, y0 + pad_y
+                inner_x1, inner_y1 = x1 - pad_x, y1 - pad_y
+                line_width = max(2, int(min(w, h) * 0.12))
+                draw.line([inner_x0, inner_y0, inner_x1, inner_y1], fill="#1A1A1A", width=line_width)
+                draw.line([inner_x0, inner_y1, inner_x1, inner_y0], fill="#1A1A1A", width=line_width)
 
             png_path = str(OUTPUT_DIR / f"{job_id}_pg{pg_idx}.png")
             img.save(png_path); pngs.append(png_path); img.close()
